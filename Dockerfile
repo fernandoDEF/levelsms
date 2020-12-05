@@ -1,9 +1,9 @@
+FROM maven:3.6.0-jdk-11-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
+
 FROM openjdk:8
-FROM maven:latest
-COPY pom.xml /tmp/pom.xml
-RUN mvn -B -f /tmp/pom.xml -s /usr/share/maven/ref/settings-docker.xml dependency:resolve
-RUN mvn clean install
-RUN mvn clean package
 ADD target/user-levels.jar user-levels.jar
 EXPOSE 9000
 ENTRYPOINT ["java", "-jar", "user-levels.jar"]
